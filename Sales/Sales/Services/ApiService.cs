@@ -24,7 +24,7 @@ namespace Sales.Services
                 var response = await client.GetAsync(url);
                 var answer = await response.Content.ReadAsStringAsync();
 
-                if(response.IsSuccessStatusCode)
+                if(!response.IsSuccessStatusCode)
                 {
                     return new Response
                     {
