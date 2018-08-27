@@ -55,17 +55,18 @@ namespace Sales.ViewModels
             if(!response.IsSuccess) 
             {
 
-                this.isRefreshing = false;
+                this.IsRefreshing = false;
                 await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Accept");
                 return;
    
             }
 
 
-            this.isRefreshing = false;
+            
             var list = (List<Product>)response.Result;
              this.Products = new ObservableCollection<Product>(list);
-            
+            this.IsRefreshing = false;
+
 
         }
 
