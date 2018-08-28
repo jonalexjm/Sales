@@ -7,6 +7,7 @@ namespace Sales.ViewModels
     using System.Windows.Input;
     using GalaSoft.MvvmLight.Command;
     using Sales.Common.Models;
+    using Sales.Helpers;
     using Sales.Services;
     using Xamarin.Forms;
     
@@ -55,7 +56,7 @@ namespace Sales.ViewModels
             if(!connection.IsSuccess)
             {
                 this.IsRefreshing = false;
-                await Application.Current.MainPage.DisplayAlert("Error", connection.Message, "Accept");
+                await Application.Current.MainPage.DisplayAlert(Languages.Error, connection.Message, Languages.Accept);
                 return;
 
             }
@@ -67,7 +68,7 @@ namespace Sales.ViewModels
             {
 
                 this.IsRefreshing = false;
-                await Application.Current.MainPage.DisplayAlert("Error", response.Message, "Accept");
+                await Application.Current.MainPage.DisplayAlert(Languages.Error, response.Message, Languages.Accept);
                 return;
    
             }

@@ -1,10 +1,11 @@
-﻿using System;
-using System.Threading.Tasks;
-using Sales.Common.Models;
-using System.Net.Http;
-using Newtonsoft.Json;
-using System.Collections.Generic;
+﻿using Newtonsoft.Json;
 using Plugin.Connectivity;
+using Sales.Common.Models;
+using Sales.Helpers;
+using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 /// <summary>
 /// sirve para consumir cualquie lista de objetos es generica
@@ -22,7 +23,7 @@ namespace Sales.Services
                 return new Response
                 {
                     IsSuccess = false,
-                    Message = "please turn on your internet setting",
+                    Message = Languages.TurnOnInternet,
                 };
             }
 
@@ -32,7 +33,7 @@ namespace Sales.Services
                 return new Response
                 {
                     IsSuccess = false,
-                    Message = "no internet connection",
+                    Message = Languages.NoInternet,
                 };
             }
 
