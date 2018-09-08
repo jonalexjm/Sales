@@ -41,20 +41,24 @@ namespace Sales.Common.Models
 
         public DateTime PublishOn { get; set; }
 
-        /**
+        
 
         public string ImageFullPath
         {
             get
             {
                 if (string.IsNullOrEmpty(this.ImagePath))
-                    return null;
+                {
+                    return "NoImage";
+                }
+
+                return $"https://salesbackendjonalexjm.azurewebsites.net/{this.ImagePath.Substring(1)}";
             }
            
-            return $"https://salesbackendjonalexjm.azurewebsites.net/{this.ImagePath.Substring(1)}";
+           
         }
 
-    */
+    
 
         public override string ToString()
         {
