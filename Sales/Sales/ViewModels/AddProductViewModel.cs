@@ -1,5 +1,7 @@
 ﻿using GalaSoft.MvvmLight.Command;
+using Sales.Common.Models;
 using Sales.Helpers;
+using Sales.Services;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,6 +14,7 @@ namespace Sales.ViewModels
     {
         #region Attributes
 
+        private ApiService apiService;
         private bool isRunning;
         private bool isEnabled;
 
@@ -44,6 +47,7 @@ namespace Sales.ViewModels
 
         public AddProductViewModel()
         {
+            this.apiService = new ApiService();
             this.IsEnabled = true;
 
         }
@@ -91,6 +95,38 @@ namespace Sales.ViewModels
                     Languages.Accept);
                 return;
             }
+
+
+            this.isRunning = true;
+            this.isEnabled = false;
+
+            var connection = await this.apiService.CheckConnection();
+
+            if (!connection.IsSuccess)
+            {
+                this.isRunning = false;
+                this.isEnabled = true;
+                await Application.Current.MainPage.DisplayAlert(
+                    Languages.Error, 
+                    connection.Message, 
+                    Languages.Accept);
+                return;
+
+            }
+
+            var product = new Product
+            {
+                Description = this.Description,
+                Price = price,
+                Remarks = this.Remarks,
+                
+
+            };
+
+            var response = await this.apiService.GetList<Product>(
+                "https://salesapijonalexjm.azurewebsites.net", 
+                "/api", 
+                "/Products");
         }
 
         #endregion
