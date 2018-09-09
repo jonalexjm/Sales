@@ -42,6 +42,43 @@ namespace Sales.Helpers
         {
             get { return Resource.Error; }
         }
+
+        public static string Description
+        {
+            get { return Resource.Description; }
+        }
+
+        public static string DescriptionPlaceHolder
+        {
+            get { return Resource.DescriptionPlaceHolder; }
+        }
+
+        public static string Price
+        {
+            get { return Resource.Price; }
+        }
+
+        public static string PricePlaceHolder
+        {
+            get { return Resource.PricePlaceHolder; }
+        }
+
+      
+        public static string Remarks
+        {
+            get { return Resource.Remarks; }
+        }
+
+        public static string Save
+        {
+            get { return Resource.Save; }
+        }
+
+        public static string ChangeImage
+        {
+            get { return Resource.ChangeImage; }
+        }
+
     }
 }
 
