@@ -15,9 +15,25 @@ namespace Sales.ViewModels
     public class ProductsViewModel : BaseViewModel
     {
 
+        #region Attributes
         private ApiService apiService;
 
         private bool isRefreshing;
+
+        
+        #endregion
+
+        #region Properties
+        private ObservableCollection<Product> products;
+
+        public ObservableCollection<Product> Products
+        {
+            get { return this.products; }
+
+            set { this.SetValue(ref this.products, value); }
+
+
+        }
 
         public bool IsRefreshing
         {
@@ -27,33 +43,45 @@ namespace Sales.ViewModels
 
 
         }
-
-   
-
-        private ObservableCollection<Product> products;
-
-        public ObservableCollection<Product> Products
-        {
-             get { return this.products; }
-
-            set { this.SetValue(ref this.products, value); }
+        #endregion
 
 
-        }
 
+
+        
+
+        #region Contructors
         public ProductsViewModel()
         {
+            instance = this;
             this.apiService = new ApiService();
             this.LoadProducts();
         }
+        #endregion
 
+        #region Singleton // coger instancia que esta en memoria
+
+        public static ProductsViewModel instance;
+
+        public static ProductsViewModel GetInstance()
+        {
+            if(instance == null)
+            {
+                return new ProductsViewModel();
+            }
+            return instance;
+        }
+
+        #endregion
+
+        #region Methods
         private async void LoadProducts()
         {
             this.IsRefreshing = true;
 
             var connection = await this.apiService.CheckConnection();
 
-            if(!connection.IsSuccess)
+            if (!connection.IsSuccess)
             {
                 this.IsRefreshing = false;
                 await Application.Current.MainPage.DisplayAlert(Languages.Error, connection.Message, Languages.Accept);
@@ -63,25 +91,27 @@ namespace Sales.ViewModels
 
             var response = await this.apiService.GetList<Product>("https://salesapijonalexjm.azurewebsites.net", "/api", "/Products");
 
-            
-            if(!response.IsSuccess) 
+
+            if (!response.IsSuccess)
             {
 
                 this.IsRefreshing = false;
                 await Application.Current.MainPage.DisplayAlert(Languages.Error, response.Message, Languages.Accept);
                 return;
-   
+
             }
 
 
-            
+
             var list = (List<Product>)response.Result;
-             this.Products = new ObservableCollection<Product>(list);
+            this.Products = new ObservableCollection<Product>(list);
             this.IsRefreshing = false;
 
 
         }
+        #endregion
 
+        #region Commands
         public ICommand RefreshCommand
         {
 
@@ -90,6 +120,7 @@ namespace Sales.ViewModels
                 return new RelayCommand(LoadProducts);
             }
 
-        }
+        } 
+        #endregion
     }
 }

@@ -1,19 +1,24 @@
-﻿using GalaSoft.MvvmLight.Command;
-using Sales.Common.Models;
-using Sales.Helpers;
-using Sales.Services;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows.Input;
-using Xamarin.Forms;
+﻿
 
 namespace Sales.ViewModels
 {
+    using GalaSoft.MvvmLight.Command;
+    using Sales.Common.Models;
+    using Sales.Helpers;
+    using Sales.Services;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Windows.Input;
+    using Xamarin.Forms;
+
+
     public class AddProductViewModel : BaseViewModel
     {
         #region Attributes
 
+        private ImageSource imageSource;
         private ApiService apiService;
         private bool isRunning;
         private bool isEnabled;
@@ -97,15 +102,15 @@ namespace Sales.ViewModels
             }
 
 
-            this.isRunning = true;
+            this.IsRunning = true;
             this.isEnabled = false;
 
             var connection = await this.apiService.CheckConnection();
 
             if (!connection.IsSuccess)
             {
-                this.isRunning = false;
-                this.isEnabled = true;
+                this.IsRunning = false;
+                this.IsEnabled = true;
                 await Application.Current.MainPage.DisplayAlert(
                     Languages.Error, 
                     connection.Message, 
@@ -123,10 +128,34 @@ namespace Sales.ViewModels
 
             };
 
-            var response = await this.apiService.GetList<Product>(
+            var response = await this.apiService.Post(
                 "https://salesapijonalexjm.azurewebsites.net", 
                 "/api", 
-                "/Products");
+                "/Products",
+                product);
+
+            if (!response.IsSuccess)// si funciono sigue pasando
+            {
+                this.IsRunning = false;
+                this.IsEnabled = true;
+                await Application.Current.MainPage.DisplayAlert(
+                    Languages.Error, 
+                    response.Message, 
+                    Languages.Accept);
+                return;
+            }
+
+            var newProduct = (Product)response.Result;
+            var viewModel = ProductsViewModel.GetInstance();
+            viewModel.Products.Add(newProduct);
+            
+
+            this.IsRunning = false;
+            this.IsEnabled = true;
+
+            await Application.Current.MainPage.Navigation.PopAsync();// navega a la pagina pricipal
+
+
         }
 
         #endregion

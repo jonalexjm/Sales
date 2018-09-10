@@ -21,7 +21,8 @@ namespace Sales.API.Controllers
         // GET: api/Products
         public IQueryable<Product> GetProducts()
         {
-            return db.Products;
+           // return db.Products;
+            return db.Products.OrderBy(p => p.Description); // made for orden ascendent
         }
 
         // GET: api/Products/5
@@ -76,6 +77,9 @@ namespace Sales.API.Controllers
         [ResponseType(typeof(Product))]
         public async Task<IHttpActionResult> PostProduct(Product product)
         {
+            product.IsAvailable = true;// lo vuelve disponible 
+            product.PublishOn = DateTime.Now.ToUniversalTime();// mejor guardarlo en ToUniversalTime para que no haya problema
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
