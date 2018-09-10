@@ -7,6 +7,7 @@ namespace Sales.Common.Models
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
     using System.Linq;
     using System.Text;
     using System.Threading.Tasks;
@@ -41,7 +42,8 @@ namespace Sales.Common.Models
 
         public DateTime PublishOn { get; set; }
 
-        
+        [NotMapped]
+        public byte[] ImageArray { get; set; }
 
         public string ImageFullPath
         {
@@ -52,7 +54,7 @@ namespace Sales.Common.Models
                     return "NoImage";
                 }
 
-                return $"https://salesbackendjonalexjm.azurewebsites.net/{this.ImagePath.Substring(1)}";
+                return $"https://salesapijonalexjm.azurewebsites.net/{this.ImagePath.Substring(1)}";
             }
            
            

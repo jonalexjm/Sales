@@ -4,6 +4,7 @@ namespace Sales.ViewModels
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Linq;
     using System.Windows.Input;
     using GalaSoft.MvvmLight.Command;
     using Sales.Common.Models;
@@ -20,13 +21,15 @@ namespace Sales.ViewModels
 
         private bool isRefreshing;
 
-        
+        private ObservableCollection<ProductItemViewModel> products;
+
+
         #endregion
 
         #region Properties
-        private ObservableCollection<Product> products;
 
-        public ObservableCollection<Product> Products
+
+        public ObservableCollection<ProductItemViewModel> Products
         {
             get { return this.products; }
 
@@ -89,22 +92,40 @@ namespace Sales.ViewModels
 
             }
 
-            var response = await this.apiService.GetList<Product>("https://salesapijonalexjm.azurewebsites.net", "/api", "/Products");
+            var response = await this.apiService.GetList<Product>(
+                "https://salesapijonalexjm.azurewebsites.net", 
+                "/api", 
+                "/Products");
 
+            this.IsRefreshing = false;
 
-            if (!response.IsSuccess)
+            if (!response.IsSuccess)// si funciono sigue pasando
             {
-
-                this.IsRefreshing = false;
-                await Application.Current.MainPage.DisplayAlert(Languages.Error, response.Message, Languages.Accept);
+               
+                await Application.Current.MainPage.DisplayAlert(
+                    Languages.Error,
+                    response.Message,
+                    Languages.Accept);
                 return;
-
             }
 
 
 
             var list = (List<Product>)response.Result;
-            this.Products = new ObservableCollection<Product>(list);
+
+            var myList = list.Select(p => new ProductItemViewModel
+            {
+                Description = p.Description,
+                ImageArray = p.ImageArray,
+                ImagePath = p.ImagePath,
+                IsAvailable = p.IsAvailable,
+                Price = p.Price,
+                ProductId = p.ProductId,
+                PublishOn = p.PublishOn,
+                Remarks = p.Remarks,
+            });
+
+            this.Products = new ObservableCollection<ProductItemViewModel>(myList);
             this.IsRefreshing = false;
 
 

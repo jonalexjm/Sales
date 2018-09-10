@@ -89,6 +89,65 @@ namespace Sales.Helpers
             get { return Resource.PriceError; }
         }
 
+        public static string  ImageSource
+        {
+            get { return Resource.ImageSource; }
+
+        }
+
+        public static string FromGallery
+        {
+            get { return Resource.FormGallery; }
+
+        }
+
+        public static string NewPicture
+        {
+            get { return Resource.NewPicture; }
+
+        }
+
+        public static string Cancel
+        {
+            get { return Resource.Cancel; }
+
+        }
+
+        public static string Delete
+        {
+            get { return Resource.Delete; }
+
+        }
+
+        public static string Edit
+        {
+            get { return Resource.Edit; }
+
+        }
+
+        public static string DeleteConfirmation
+        {
+            get { return Resource.DeleteConfirmation; }
+
+        }
+
+        public static string No
+        {
+            get { return Resource.No; }
+
+        }
+
+        public static string Yes
+        {
+            get { return Resource.Yes; }
+
+        }
+
+        public static string Confirm
+        {
+            get { return Resource.Confirm; }
+
+        }
     }
 }
 
