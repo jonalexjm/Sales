@@ -30,6 +30,20 @@ namespace Sales.ViewModels
 
         #region Commands
 
+        public ICommand EditProductCommand
+        {
+            get
+            {
+                return new RelayCommand(EditProduct);
+            }
+        }
+
+        private async void EditProduct()
+        {
+            MainViewModel.GetInstance().EditProduct = new EditProductViewModel(this);
+            await Application.Current.MainPage.Navigation.PushAsync(new EditProductPage());
+        }
+
         public ICommand DeleteProductCommand
         {
             get

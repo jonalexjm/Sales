@@ -23,6 +23,8 @@ namespace Sales.ViewModels
 
         private ObservableCollection<ProductItemViewModel> products;
 
+        public List<Product> MyProducts { get; set; }
+
 
         #endregion
 
@@ -111,9 +113,10 @@ namespace Sales.ViewModels
 
 
 
-            var list = (List<Product>)response.Result;
+            this.MyProducts = (List<Product>)response.Result;
+            this.RefreshList();
 
-            var myList = list.Select(p => new ProductItemViewModel
+            var myListProductItemViewModel = MyProducts.Select(p => new ProductItemViewModel
             {
                 Description = p.Description,
                 ImageArray = p.ImageArray,
@@ -125,9 +128,27 @@ namespace Sales.ViewModels
                 Remarks = p.Remarks,
             });
 
-            this.Products = new ObservableCollection<ProductItemViewModel>(myList);
+            this.Products = new ObservableCollection<ProductItemViewModel>(myListProductItemViewModel.OrderBy(p => p.Description));
             this.IsRefreshing = false;
 
+
+        }
+
+        public void RefreshList()
+        {
+            var myListProductItemViewModel = MyProducts.Select(p => new ProductItemViewModel
+            {
+                Description = p.Description,
+                ImageArray = p.ImageArray,
+                ImagePath = p.ImagePath,
+                IsAvailable = p.IsAvailable,
+                Price = p.Price,
+                ProductId = p.ProductId,
+                PublishOn = p.PublishOn,
+                Remarks = p.Remarks,
+            });
+
+            this.Products = new ObservableCollection<ProductItemViewModel>(myListProductItemViewModel.OrderBy(p => p.Description));
 
         }
         #endregion
