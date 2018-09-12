@@ -13,6 +13,8 @@ namespace Sales.ViewModels
     {
         #region Properties
 
+        public LoginViewModel Login { get; set; }
+
         public EditProductViewModel EditProduct { get; set; }
 
         public ProductsViewModel Products { get; set; }
@@ -23,8 +25,9 @@ namespace Sales.ViewModels
         #region Constructor
         public MainViewModel()
         {
+
             instance = this;
-            this.Products = new ProductsViewModel();
+            
         }
         #endregion
 
