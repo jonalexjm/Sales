@@ -25,7 +25,8 @@ namespace Sales.ViewModels
         #region Constructor
         public MainViewModel()
         {
-
+            //this.Products = new ProductsViewModel();
+            //this.Login = new LoginViewModel();
             instance = this;
             
         }

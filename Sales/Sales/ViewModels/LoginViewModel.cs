@@ -1,13 +1,16 @@
-﻿using Plugin.Media.Abstractions;
+﻿using GalaSoft.MvvmLight.Command;
+using Plugin.Media.Abstractions;
+using Sales.Helpers;
 using Sales.Services;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace Sales.ViewModels
 {
-    public class LoginViewModel
+    public class LoginViewModel : BaseViewModel
     {
 
         #region Attributes
@@ -31,12 +34,13 @@ namespace Sales.ViewModels
 
         public string Password { get; set; }
 
-        public string IsRemembered { get; set; }
+        public bool IsRemembered { get; set; }
 
         public bool IsRunning
         {
             get { return this.isRunning; }
             set { this.SetValue(ref this.isRunning, value); }
+          
         }
 
         public bool IsEnabled
@@ -49,9 +53,45 @@ namespace Sales.ViewModels
 
         #region Constructors
 
+        public LoginViewModel()
+        {
+            this.IsEnabled = true;
+        }
+
         #endregion
 
         #region Commands
+
+        public ICommand LoginCommand
+        {
+            get
+            {
+                return new RelayCommand(Login);
+            }
+        }
+
+        private async void Login()
+        {
+            if(string.IsNullOrEmpty(this.Email))
+            {
+                await Application.Current.MainPage.DisplayAlert(
+                    Languages.Error,
+                    Languages.EmailValidation,
+                    Languages.Accept);
+
+                return;
+            }
+
+            if (string.IsNullOrEmpty(this.Password))
+            {
+                await Application.Current.MainPage.DisplayAlert(
+                    Languages.Error,
+                    Languages.PasswordValidation,
+                    Languages.Accept);
+
+                return;
+            }
+        }
 
         #endregion
     }
