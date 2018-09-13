@@ -2,6 +2,7 @@
 using Plugin.Media.Abstractions;
 using Sales.Helpers;
 using Sales.Services;
+using Sales.Views;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -14,6 +15,8 @@ namespace Sales.ViewModels
     {
 
         #region Attributes
+
+        
 
         private MediaFile file;
 
@@ -55,6 +58,8 @@ namespace Sales.ViewModels
 
         public LoginViewModel()
         {
+            this.apiService = new ApiService();
+            this.IsRemembered = true;
             this.IsEnabled = true;
         }
 
@@ -91,6 +96,38 @@ namespace Sales.ViewModels
 
                 return;
             }
+
+            var connection = await this.apiService.CheckConnection();
+            if (!connection.IsSuccess)
+            {
+                this.IsRunning = false;
+                this.IsEnabled = true;
+                await Application.Current.MainPage.DisplayAlert(Languages.Error, connection.Message, Languages.Accept);
+                return;
+            }
+
+
+            var url = Application.Current.Resources["UrlAPI"].ToString();
+            var token = await this.apiService.GetToken(url, this.Email, this.Password);
+
+            if(token == null || string.IsNullOrEmpty(token.AccessToken))
+            {
+                this.IsRunning = false;
+                this.isEnabled = true;
+
+                await Application.Current.MainPage.DisplayAlert(Languages.Error, Languages.SomethingWrong, Languages.Accept);
+                return;
+            }
+
+           
+            MainViewModel.GetInstance().Products = new ProductsViewModel();
+            Application.Current.MainPage = new ProductsPage();
+
+            this.IsRunning = false;
+            this.isEnabled = true;
+
+
+
         }
 
         #endregion
