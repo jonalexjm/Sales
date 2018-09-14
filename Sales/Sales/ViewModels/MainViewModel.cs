@@ -1,7 +1,9 @@
 ﻿using GalaSoft.MvvmLight.Command;
+using Sales.Helpers;
 using Sales.Views;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 using System.Windows.Input;
 //using static System.Net.Mime.MediaTypeNames;
@@ -12,6 +14,8 @@ namespace Sales.ViewModels
     public class MainViewModel
     {
         #region Properties
+
+        public ObservableCollection<MenuItemViewModel> Menu { get; set; }
 
         public LoginViewModel Login { get; set; }
 
@@ -28,8 +32,11 @@ namespace Sales.ViewModels
             //this.Products = new ProductsViewModel();
             //this.Login = new LoginViewModel();
             instance = this;
+            this.LoadMenu();
             
         }
+
+        
         #endregion
 
         #region Singleton // coger instancia que esta en memoria
@@ -47,6 +54,36 @@ namespace Sales.ViewModels
 
         #endregion
 
+
+        #region Methods
+        private void LoadMenu()
+        {
+            this.Menu = new ObservableCollection<MenuItemViewModel>();
+
+            this.Menu.Add(new MenuItemViewModel
+            {
+                Icon = "ic_info",
+                PageName = "AboutPage",
+                Title = Languages.About,
+            });
+
+            this.Menu.Add(new MenuItemViewModel
+            {
+                Icon = "ic_phonelink_setup",
+                PageName = "SetupPage",
+                Title = Languages.Setup,
+            });
+
+            this.Menu.Add(new MenuItemViewModel
+            {
+                Icon = "ic_exit_to_app",
+                PageName = "LoginPage",
+                Title = Languages.Exit,
+            });
+
+        }
+        #endregion
+
         #region Commands
 
         public ICommand AddProductCommand
@@ -61,7 +98,7 @@ namespace Sales.ViewModels
         private async void GoToAddProduct()
         {
             this.AddProduct = new AddProductViewModel();// se instancia aqui para que le de tiempo de entrar
-            await Application.Current.MainPage.Navigation.PushAsync(new AddProductPage());
+            await App.Navigator.PushAsync(new AddProductPage());
         } 
         #endregion
     }

@@ -21,8 +21,7 @@ namespace Sales.Helpers
         private const string tokenType = "TokenType";
         private const string accessToken = "AccessToken";
         private const string isRemembered = "IsRemembered";
-
-        private static readonly string SettingsDefault = string.Empty;
+        private static readonly string stringDefault = string.Empty;
         private static readonly bool booleanDefault = false;
 
         #endregion
@@ -32,7 +31,7 @@ namespace Sales.Helpers
         {
             get
             {
-                return AppSettings.GetValueOrDefault(tokenType, SettingsDefault);
+                return AppSettings.GetValueOrDefault(tokenType, stringDefault);
             }
             set
             {
@@ -44,7 +43,7 @@ namespace Sales.Helpers
         {
             get
             {
-                return AppSettings.GetValueOrDefault(accessToken, SettingsDefault);
+                return AppSettings.GetValueOrDefault(accessToken, stringDefault);
             }
             set
             {

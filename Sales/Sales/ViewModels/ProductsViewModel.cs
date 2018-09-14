@@ -112,7 +112,9 @@ namespace Sales.ViewModels
             var response = await this.apiService.GetList<Product>(
                 "https://salesapijonalexjm.azurewebsites.net", 
                 "/api", 
-                "/Products");
+                "/Products",
+                Settings.TokenType,
+                Settings.AccessToken);
 
             this.IsRefreshing = false;
 

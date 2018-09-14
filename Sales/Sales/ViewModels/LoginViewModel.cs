@@ -113,18 +113,26 @@ namespace Sales.ViewModels
             if(token == null || string.IsNullOrEmpty(token.AccessToken))
             {
                 this.IsRunning = false;
-                this.isEnabled = true;
+                this.IsEnabled = true;
 
                 await Application.Current.MainPage.DisplayAlert(Languages.Error, Languages.SomethingWrong, Languages.Accept);
                 return;
             }
 
-           
+            Settings.TokenType = token.TokenType;
+            Settings.AccessToken = token.AccessToken;
+            Settings.IsRemembered = this.IsRemembered;
+
+            
+
             MainViewModel.GetInstance().Products = new ProductsViewModel();
             Application.Current.MainPage = new ProductsPage();
 
             this.IsRunning = false;
-            this.isEnabled = true;
+            this.IsEnabled = true;
+
+
+
 
 
 

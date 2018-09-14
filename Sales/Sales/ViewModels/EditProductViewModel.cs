@@ -240,7 +240,9 @@ namespace Sales.ViewModels
                 "/api",
                 "/Products",
                 this.product,
-                this.product.ProductId);
+                this.product.ProductId,
+                Settings.TokenType,
+                Settings.AccessToken);
 
             if (!response.IsSuccess)// si funciono sigue pasando
             {
@@ -269,7 +271,7 @@ namespace Sales.ViewModels
             this.IsRunning = false;
             this.IsEnabled = true;
 
-            await Application.Current.MainPage.Navigation.PopAsync();// navega a la pagina pricipal
+            await App.Navigator.PopAsync();// navega a la pagina pricipal
 
 
         }
